@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Blog</title>
+</head>
+	
+	<style type="text/css">
+		body {
+			background-color: grey;
+			font-family: Helvetica;
+			font-size: 20px;
+		}
+
+		header nav ul {
+			float: right;
+		}
+
+		header nav ul li {
+			display: inline;
+			margin: 5px;
+		}
+
+		header nav ul li a {
+			text-decoration: none;
+			color: aqua;
+			padding: 10px;
+			border-radius: 10px;
+		}
+
+		header nav ul li a:hover {
+			color: red;
+			border-bottom: thick solid aqua;
+		}
+
+		main section {
+			position: absolute;
+			margin-top: 200px;
+			margin-left: 475px;
+		}
+
+		main section input[type='text'] {
+			margin: 7px;
+			padding: 10px;
+		}
+
+		main section textarea {
+			margin: 7px;
+			padding: 10px;	
+		}
+
+		main section label {
+			font-size: initial;
+		}
+
+		main section input[type="button"] {
+			padding: 7px;
+			margin: 5px;
+			background-color: lightgreen;
+			border: 0;
+			border-radius: 7px;
+		}
+
+		#post {
+			margin-left: 60px;
+		}
+
+		#disp {
+			margin-left: 44px;
+		}
+
+		main section input[type='file'] {
+			padding: 5px;
+			margin: 2px;
+		}
+
+		#allPost {
+			position: absolute;
+			width: 500px;
+			height: 420px;
+			background-color: rgba(255, 0, 0, 0.6);
+			margin-top: 120px;
+			border-radius: 20px;
+			margin-left: 325px;	
+		}
+
+		#deletePost {
+			position: absolute;
+			width: 70px;
+			height: 70px;
+			margin-top: 500px;
+			margin-left: 550px;
+		}
+
+		#cancelImage {
+			display: none;
+			width: 70px;
+			height: 70px;
+			position: absolute;
+			margin-left: 1150px;
+		}
+
+		#prev {
+			position: absolute;
+			margin-left: -200px;
+			margin-top: 150px;
+		}
+
+		#nex {
+			position: absolute;
+			margin-left: 700px;
+			margin-top: 120px;	
+		}
+
+		#postTitle {
+			/*position: absolute;*/
+			margin-top: 50px;
+		}
+
+		#ithPBody {
+			margin-top: -20px;
+			text-align: center;
+		}
+
+		#postImage {
+			margin-top: 20px;
+			margin-left: 160px;
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+		}
+
+		#delButton {
+			margin-left: 160px;
+		}
+
+	</style>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="">Home</a></li>
+				<li><a href="#">About Us</a></li>
+				<li><a href="#">Contact Us</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<section id="postForm">
+			<input type="text" id="title" placeholder="Title of your post"> <br>
+			<textarea id="postBody" placeholder="Body of your post" rows="5" cols="20"></textarea> <br>
+			<label>Picture:</label><input type="file" id="postImg"> <br>
+			<input type="button" id="post" value="Create Post" onclick="createPost()"> <br>
+			<input type="button" id="disp" value="Display All Posts", onclick="displayPosts(0)">
+		</section>
+	</main>
+
+	<section id="allPost"></section>
+	<!-- <img src="face-detection-example-2-right.413ecb338dc3.jpg" id="deletePost"> -->
+	<img src="cancel.jpg" id="cancelImage" onclick="hide()">
+	<!-- <button onclick="next()">Next</button> -->
+	<script type="text/javascript">
+		allPost.style.display = 'none';
+		let allPosts = [];
+		const createPost = ()=>{
+			let post = {}
+			post.title = title.value;
+			post.body = postBody.value;
+			post.image = "Images\\"+postImg.value.slice(12, postImg.length);
+			allPosts.push(post);
+			title.value = "";
+			postBody.value = "";
+			postImg.value = "";
+
+			// "c:\\fakepath\\image.png"
+		}
+
+		const displayPosts = (p)=>{
+			if(allPosts == "") {
+				alert("No posts to display")
+			}
+			if (p < allPosts.length) {
+				postForm.style.opacity = '0.5';
+				allPost.style.display = 'block';
+				cancelImage.style.display = 'block';
+				console.log(allPosts[p]);
+				allPost.innerHTML = '<button id="prev" onclick="previous('+p+')">Previous</button>'  + '<button id="nex" onclick="next('+p+')">Next</button>' + '<img id="postImage" src="'+ allPosts[p].image +'" onclick="enlarge('+ p +')"><br><h3 id="postTitle" align="center">'+allPosts[p].title + '</h3>' + '<br>'+ '<p id="ithPBody">'+ allPosts[p].body +'</p><br><br><button id="delButton" onclick="delPost('+ p +')">Delete Post</button>';
+			}
+
+		}
+
+		const delPost = (k) => {
+			allPosts.splice(k, 1);
+			if (k >= allPosts.length) {
+				k--;
+			}
+			displayPosts(k);
+		}
+
+		const hide = () => {
+			cancelImage.style.display = 'none';
+			allPost.style.display = 'none';	
+			postForm.style.opacity = '1';
+		}
+
+		const next = (k) => {
+			displayPosts(k+=1);
+		}
+
+		const previous = (k) => {
+			displayPosts(k-=1);
+		}
+
+		const enlarge = (k) => {
+			allPost.style.display = 'none';
+			// cancelImage.style.display = 'none';
+			postImage.style.display = 'block';
+			postImage.style.width = '70%';
+			postImage.style.height = '70%';
+			postImage.style.borderRadius = '0';
+		}
+	</script>
+</body>
+</html>
